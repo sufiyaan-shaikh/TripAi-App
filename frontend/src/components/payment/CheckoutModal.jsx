@@ -2,9 +2,7 @@
 import { useState, useEffect } from "react"
 import { loadStripe } from "@stripe/stripe-js"
 import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js"
-import { createPaymentIntent, confirmPayment } from "@/lib/api"
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+import { createPaymentIntent, confirmPayment, getStripeConfig } from "@/lib/api"
 
 function PaymentForm({ breakdown, onSuccess, onClose }) {
   const stripe   = useStripe()
@@ -98,6 +96,7 @@ export default function CheckoutModal({ tripId, amountInr, flightCost, hotelCost
   const [clientSecret, setClientSecret] = useState("")
   const [breakdown, setBreakdown]       = useState({})
   const [loadError, setLoadError]       = useState("")
+  const [stripePromise, setStripePromise] = useState(null)
 
   useEffect(() => {
     document.body.style.overflow = "hidden"
@@ -108,6 +107,9 @@ export default function CheckoutModal({ tripId, amountInr, flightCost, hotelCost
     if (!amountInr) return
     const init = async () => {
       try {
+        const config = await getStripeConfig()
+        setStripePromise(loadStripe(config.publishable_key))
+
         const data = await createPaymentIntent(String(tripId||""), Number(amountInr), Number(flightCost||0), Number(hotelCost||0))
         setClientSecret(data.client_secret)
         setBreakdown(data)
