@@ -10,10 +10,12 @@ from reportlab.lib.units import mm
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer,
-    Table, TableStyle, HRFlowable
+    Table, TableStyle, HRFlowable, Image
 )
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 from io import BytesIO
+import requests
+import qrcode
 from datetime import datetime
 
 
@@ -156,6 +158,43 @@ def info_grid(data: list, styles: dict, col_widths=None):
 
 
 # ============================================
+-- HELPER — Fetch city image
+# ============================================
+
+def fetch_city_image(destination: str, width: int = 600, height: int = 300) -> BytesIO:
+    """Fetches a city cover image from Unsplash as a buffer."""
+    try:
+        encoded = requests.utils.quote(f"{destination} city travel")
+        url = f"https://source.unsplash.com/{width}x{height}/?{encoded}"
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            return BytesIO(response.content)
+    except Exception as e:
+        print(f"IMAGE FETCH ERROR: {e}")
+    return None
+
+
+# ============================================
+-- HELPER — Generate QR code
+# ============================================
+
+def generate_qr_code(url: str) -> BytesIO:
+    """Generates a QR code image as a buffer."""
+    try:
+        qr = qrcode.QRCode(version=1, box_size=10, border=2)
+        qr.add_data(url)
+        qr.make(fit=True)
+        img = qr.make_image(fill_color="black", back_color="white")
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        buffer.seek(0)
+        return buffer
+    except Exception as e:
+        print(f"QR GEN ERROR: {e}")
+    return None
+
+
+# ============================================
 # MAIN FUNCTION
 # ============================================
 
@@ -216,7 +255,22 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
         ("RIGHTPADDING",  (0, 0), (-1, -1), 0),
     ]))
     story.append(subtitle_table)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
+
+
+    # ── CITY COVER IMAGE (PRO FEATURE) ───────────────────────
+    
+    city_name = trip_data.get("destination", "Explore")
+    img_buffer = fetch_city_image(city_name, width=540, height=180)
+    if img_buffer:
+        try:
+            city_img = Image(img_buffer, width=W, height=50*mm)
+            story.append(city_img)
+            story.append(Spacer(1, 10))
+        except:
+            story.append(Spacer(1, 2))
+    else:
+        story.append(Spacer(1, 2))
 
     # Confirmed badge
     if payment_data and payment_data.get("status") == "success":
@@ -435,6 +489,29 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
         "For support contact: support@tripai.com",
         styles["footer"]
     ))
+    story.append(Spacer(1, 10))
+
+    # ── QR CODE (PRO FEATURE) ────────────────────────────────
+    
+    # Generate live URL: domain + chat + destination (or trip_id if tracked)
+    frontend_domain = "https://trip-ai-app-git-main-sufiyaan-shaikhs-projects.vercel.app"
+    live_url = f"{frontend_domain}/chat?destination={requests.utils.quote(city_name)}"
+    
+    qr_buffer = generate_qr_code(live_url)
+    if qr_buffer:
+        try:
+            qr_img = Image(qr_buffer, width=25*mm, height=25*mm)
+            qr_table = Table([[
+                qr_img,
+                Paragraph("<br/>SCAN TO VIEW LIVE TRIP<br/>ON YOUR MOBILE", styles["footer"])
+            ]], colWidths=[30*mm, 60*mm])
+            qr_table.setStyle(TableStyle([
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+            ]))
+            story.append(qr_table)
+        except:
+            pass
 
 
     # ── BUILD ────────────────────────────────────────────────
