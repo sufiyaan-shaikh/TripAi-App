@@ -158,7 +158,7 @@ def info_grid(data: list, styles: dict, col_widths=None):
 
 
 # ============================================
--- HELPER — Fetch city image
+# HELPER - Fetch city image
 # ============================================
 
 def fetch_city_image(destination: str, width: int = 600, height: int = 300) -> BytesIO:
@@ -176,7 +176,7 @@ def fetch_city_image(destination: str, width: int = 600, height: int = 300) -> B
 
 
 # ============================================
--- HELPER — Generate QR code
+# HELPER - Generate QR code
 # ============================================
 
 def generate_qr_code(url: str) -> BytesIO:
