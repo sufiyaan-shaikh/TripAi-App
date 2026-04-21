@@ -166,7 +166,7 @@ def fetch_city_image(destination: str, width: int = 600, height: int = 300) -> B
     try:
         encoded = requests.utils.quote(f"{destination} city travel")
         url = f"https://source.unsplash.com/{width}x{height}/?{encoded}"
-        response = requests.get(url, timeout=10)
+        response = requests.get(url, timeout=3)
         if response.status_code == 200:
             return BytesIO(response.content)
     except Exception as e:
@@ -268,9 +268,23 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
             story.append(city_img)
             story.append(Spacer(1, 10))
         except:
-            story.append(Spacer(1, 2))
+            # Fallback gold banner if image load fails
+            banner = Table([[""]], colWidths=[W], rowHeights=[30*mm])
+            banner.setStyle(TableStyle([
+                ("BACKGROUND", (0,0), (-1,-1), colors.HexColor("#f59e0b")),
+                ("ROUNDEDCORNERS", [12]),
+            ]))
+            story.append(banner)
+            story.append(Spacer(1, 10))
     else:
-        story.append(Spacer(1, 2))
+        # Fallback banner if image fetch fails
+        banner = Table([[""]], colWidths=[W], rowHeights=[30*mm])
+        banner.setStyle(TableStyle([
+            ("BACKGROUND", (0,0), (-1,-1), colors.HexColor("#f59e0b")),
+            ("ROUNDEDCORNERS", [12]),
+        ]))
+        story.append(banner)
+        story.append(Spacer(1, 10))
 
     # Confirmed badge
     if payment_data and payment_data.get("status") == "success":

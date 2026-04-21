@@ -190,11 +190,13 @@ export default function ChatPage({ roomId = null }) {
 
         {/* ── CHAT PANEL ── */}
         <div style={{
-          flex: mapOpen ? "0 0 58%" : "1",
+          flex: mapOpen ? "0 0 65%" : "1",
           display: "flex", flexDirection: "column",
           borderRight: mapOpen ? "1px solid var(--border)" : "none",
           transition: "flex 0.3s ease",
           minWidth: 0,
+          // Handle mobile/small screens via a simple CSS-in-JS media query-like check or just allow shrinking
+          maxWidth: "100%",
         }}>
 
           {/* Header */}
