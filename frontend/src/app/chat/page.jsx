@@ -195,7 +195,7 @@ export default function ChatPage({ roomId = null }) {
           borderRight: mapOpen ? "1px solid var(--border)" : "none",
           transition: "flex 0.3s ease",
           minWidth: 0,
-          // Handle mobile/small screens via a simple CSS-in-JS media query-like check or just allow shrinking
+          position: "relative",
           maxWidth: "100%",
         }}>
 
