@@ -26,7 +26,10 @@ function PaymentForm({ breakdown, onSuccess, onClose }) {
         await confirmPayment(paymentIntent.id)
         onSuccess(paymentIntent.id)
       }
-    } catch { setError("Payment failed. Please try again."); setProcessing(false) }
+    } catch (err) { 
+      setError(err.message || "Payment failed. Please try again."); 
+      setProcessing(false) 
+    }
   }
 
   const Row = ({ label, value, bold }) => (

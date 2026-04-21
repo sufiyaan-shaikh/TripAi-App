@@ -26,9 +26,18 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         user = get_user_by_auth_id(auth_response.user.id)
 
         if not user:
+            # Self-healing: Create profile if missing but auth is valid
+            from db.user_db import create_user
+            user = create_user(
+                auth_id=auth_response.user.id,
+                email=auth_response.user.email,
+                full_name=auth_response.user.email.split("@")[0]
+            )
+
+        if not user:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="User profile not found."
+                detail="User profile could not be created."
             )
 
         return user
