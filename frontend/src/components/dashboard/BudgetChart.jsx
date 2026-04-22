@@ -111,14 +111,21 @@ const BudgetChart = ({ data }) => {
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -100%)',
+          transform: 'translate(-50%, -50%)',
           textAlign: 'center',
           pointerEvents: 'none',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center'
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 100
         }}>
-          <p style={{ margin: 0, fontSize: 10, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: "0.05em" }}>Goal</p>
+          <p style={{ 
+            margin: 0, fontSize: 10, color: 'var(--muted)', 
+            textTransform: 'uppercase', letterSpacing: "0.08em", fontWeight: 600 
+          }}>
+            Goal
+          </p>
           {isEditing ? (
             <input 
               autoFocus
@@ -127,12 +134,15 @@ const BudgetChart = ({ data }) => {
               onChange={e => setTempBudget(e.target.value)}
               style={{
                 background: "rgba(255,255,255,0.05)", border: "1px solid var(--border-gold)",
-                borderRadius: 4, width: 80, fontSize: 14, color: "white", textAlign: "center",
-                marginTop: 2, pointerEvents: "all"
+                borderRadius: 4, width: 80, fontSize: 13, color: "white", textAlign: "center",
+                marginTop: 4, pointerEvents: "all", outline: "none"
               }}
             />
           ) : (
-            <p style={{ margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--white)' }}>
+            <p style={{ 
+              margin: 0, fontSize: 15, fontWeight: 800, color: 'var(--white)', 
+              fontFamily: "var(--font-display)", letterSpacing: "-0.01em" 
+            }}>
               ₹{totalBudget.toLocaleString()}
             </p>
           )}
