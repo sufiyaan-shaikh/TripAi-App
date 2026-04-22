@@ -1,5 +1,5 @@
 "use client"
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { useChat } from "@/hooks/useChat"
@@ -70,7 +70,7 @@ function ItineraryAccordion({ days }) {
   )
 }
 
-export default function ChatPage({ roomId = null }) {
+function ChatPageInner({ roomId = null }) {
   const { user, loading: authLoading } = useAuth()
   const { messages, loading, error, sendMessage, clearChat } = useChat(roomId)
   const searchParams = useSearchParams()
@@ -415,5 +415,13 @@ export default function ChatPage({ roomId = null }) {
 
       </div>
     </div>
+  )
+}
+
+export default function ChatPage(props) {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#020617" }} />}>
+      <ChatPageInner {...props} />
+    </Suspense>
   )
 }
