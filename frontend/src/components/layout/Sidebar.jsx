@@ -1,8 +1,15 @@
-"use client"
-import { useRouter, usePathname } from "next/navigation"
-import { useAuth } from "@/hooks/useAuth"
-import { logoutUser } from "@/lib/auth"
-import { useSidebar } from "@/context/SidebarContext"
+import { 
+  LayoutDashboard, 
+  Map, 
+  MapPin, 
+  Calendar, 
+  Wallet, 
+  User, 
+  Settings, 
+  LogOut,
+  Menu,
+  ChevronLeft
+} from "lucide-react"
 
 export default function Sidebar() {
   const router = useRouter()
@@ -11,11 +18,13 @@ export default function Sidebar() {
   const { isCollapsed, toggleSidebar } = useSidebar()
 
   const navItems = [
-    { label: "Dashboard",   path: "/dashboard", icon: "📊" },
-    { label: "AI Planning", path: "/chat",      icon: "✈️" },
-    { label: "My Trips",    path: "/trips",     icon: "🗺️" },
-    { label: "Wishlist",    path: "/wishlist",  icon: "❤️" },
-    { label: "Preferences", path: "/profile",   icon: "⚙️" },
+    { label: "Dashboard",   path: "/dashboard", icon: <LayoutDashboard size={20} /> },
+    { label: "Trips",       path: "/trips",     icon: <Map size={20} /> },
+    { label: "Destinations",path: "/wishlist",  icon: <MapPin size={20} /> },
+    { label: "Itinerary",   path: "/chat",      icon: <Calendar size={20} /> },
+    { label: "Budget",      path: "/dashboard", icon: <Wallet size={20} /> }, 
+    { label: "Profile",     path: "/profile",   icon: <User size={20} /> },
+    { label: "Settings",    path: "/profile",   icon: <Settings size={20} /> },
   ]
 
   const handleLogout = async () => {

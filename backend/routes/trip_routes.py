@@ -48,10 +48,26 @@ async def get_trip_stats(user=Depends(get_current_user)):
                 if t.get("status", "").lower() in PAID_STATUSES
             ))
 
+        # Countries Visited (unique destinations from paid trips)
+        destinations = {t.get("destination", "").split(",")[-1].strip() for t in trips if t.get("status", "").lower() in PAID_STATUSES}
+        countries_count = len([d for d in destinations if d])
+
+        # Places Saved (Wishlist count)
+        wishlist_res = supabase.table("wishlist").select("id", count="exact").eq("user_id", user["id"]).execute()
+        places_saved = wishlist_res.count or 0
+
+        # Upcoming Trips
+        from datetime import date
+        today = date.today().isoformat()
+        upcoming = len([t for t in trips if t.get("start_date", "") > today])
+
         return {
             "trips_planned": planned,
             "trips_booked": booked,
-            "total_spent": total_spent
+            "total_spent": total_spent,
+            "countries_visited": countries_count,
+            "places_saved": places_saved,
+            "upcoming_trips": upcoming
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
