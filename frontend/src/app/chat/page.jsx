@@ -1,6 +1,6 @@
 "use client"
 import { useState, useRef, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { useChat } from "@/hooks/useChat"
 import { logoutUser, getToken } from "@/lib/auth"
@@ -73,6 +73,7 @@ function ItineraryAccordion({ days }) {
 export default function ChatPage({ roomId = null }) {
   const { user, loading: authLoading } = useAuth()
   const { messages, loading, error, sendMessage, clearChat } = useChat(roomId)
+  const searchParams = useSearchParams()
 
   const [input, setInput]             = useState("")
   const [showPayment, setShowPayment] = useState(false)
@@ -82,6 +83,20 @@ export default function ChatPage({ roomId = null }) {
   const [copied, setCopied]           = useState(false)
   const [mapOpen, setMapOpen]         = useState(true) // Map toggle
   const { isCollapsed }               = useSidebar()
+
+  // Handle deep-linked destination from dashboard
+  useEffect(() => {
+    const dest = searchParams.get("destination")
+    if (dest && messages.length === 0 && !loading) {
+      const prompt = `Plan a trip to ${dest}`
+      setInput(prompt)
+      // Auto-send slightly after mount to feel natural
+      const timer = setTimeout(() => {
+        sendMessage(prompt)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [searchParams, messages.length, loading, sendMessage])
 
   const { isListening, toggleListening, error: voiceError } = useVoice((transcript) => {
     setInput(transcript)

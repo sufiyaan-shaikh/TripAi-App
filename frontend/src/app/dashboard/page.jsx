@@ -117,13 +117,18 @@ export default function DashboardPage() {
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
                 {recommendedTrips.map((trip, i) => (
-                  <RecommendationCard key={i} {...trip} delay={0.5 + i * 0.1} />
+                  <RecommendationCard 
+                    key={i} 
+                    {...trip} 
+                    delay={0.5 + i * 0.1} 
+                    onClick={() => router.push(`/chat?destination=${trip.city}`)}
+                  />
                 ))}
               </div>
             </div>
 
             {/* Right: Budget */}
-            <div style={{ animation: "fadeUp 0.4s ease 0.6s both" }}>
+            <div style={{ animation: "fadeUp 0.4s ease 0.6s both" }} onClick={() => router.push("/budget")}>
                <BudgetChart />
             </div>
 
@@ -134,10 +139,21 @@ export default function DashboardPage() {
             
             {/* Left: Upcoming Trips */}
             <div className="glass" style={{ borderRadius: 20, padding: 24, animation: "fadeUp 0.4s ease 0.7s both" }}>
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, margin: "0 0 20px 0" }}>Upcoming Trips</h3>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, margin: 0 }}>Upcoming Trips</h3>
+                <button onClick={() => router.push("/trips")} style={{ background: "none", border: "none", color: "var(--gold)", fontSize: 13, cursor: "pointer", fontWeight: 600 }}>See Calendar</button>
+              </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {recentTrips.length > 0 ? recentTrips.map((trip, i) => (
-                  <div key={i} className="glass" style={{ padding: 16, borderRadius: 16, display: "flex", alignItems: "center", gap: 16, border: "1px solid rgba(255,255,255,0.05)" }}>
+                  <div 
+                    key={i} 
+                    className="glass card-hover" 
+                    onClick={() => router.push("/trips")}
+                    style={{ 
+                      padding: 16, borderRadius: 16, display: "flex", alignItems: "center", 
+                      gap: 16, border: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" 
+                    }}
+                  >
                     <div style={{ width: 60, height: 60, borderRadius: 12, background: "rgba(255,255,255,0.04)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>
                       🏝️
                     </div>

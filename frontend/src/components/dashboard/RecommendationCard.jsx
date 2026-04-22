@@ -1,14 +1,15 @@
 "use client"
 import React from 'react';
 
-const RecommendationCard = ({ city, country, days, price, imageUrl, delay = 0 }) => {
+const RecommendationCard = ({ city, country, days, price, imageUrl, delay = 0, onClick }) => {
   return (
-    <div className="glass card-hover" style={{
+    <div className="glass card-hover" onClick={onClick} style={{
       borderRadius: 16,
       overflow: "hidden",
       animation: `fadeUp 0.4s ease ${delay}s both`,
       display: "flex",
-      flexDirection: "column"
+      flexDirection: "column",
+      cursor: "pointer"
     }}>
       <div style={{ height: 140, overflow: "hidden", position: "relative" }}>
         <img 

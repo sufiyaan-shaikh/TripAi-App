@@ -27,7 +27,7 @@ export default function Sidebar() {
     { label: "Trips",       path: "/trips",     icon: <Map size={20} /> },
     { label: "Destinations",path: "/wishlist",  icon: <MapPin size={20} /> },
     { label: "Itinerary",   path: "/chat",      icon: <Calendar size={20} /> },
-    { label: "Budget",      path: "/dashboard", icon: <Wallet size={20} /> }, 
+    { label: "Budget",      path: "/budget",    icon: <Wallet size={20} /> }, 
     { label: "Profile",     path: "/profile",   icon: <User size={20} /> },
     { label: "Settings",    path: "/profile",   icon: <Settings size={20} /> },
   ]
