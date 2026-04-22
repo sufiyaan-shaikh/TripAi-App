@@ -1,3 +1,8 @@
+"use client"
+import { useRouter, usePathname } from "next/navigation"
+import { useAuth } from "@/hooks/useAuth"
+import { logoutUser } from "@/lib/auth"
+import { useSidebar } from "@/context/SidebarContext"
 import { 
   LayoutDashboard, 
   Map, 

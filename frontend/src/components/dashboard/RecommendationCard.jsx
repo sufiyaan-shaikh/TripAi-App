@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 
 const RecommendationCard = ({ city, country, days, price, imageUrl, delay = 0 }) => {
