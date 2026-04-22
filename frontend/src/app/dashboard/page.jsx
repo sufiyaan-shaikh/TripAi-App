@@ -11,22 +11,19 @@ import BudgetChart from "@/components/dashboard/BudgetChart"
 import { Search, Bell, Plus, MapPin, Map, LayoutDashboard, Calendar, ArrowRight } from "lucide-react"
 
 const STAT_CARDS = (stats) => [
-  { label: "Trips Planned",    value: stats.trips_planned,    icon: <LayoutDashboard size={22} />, color: "#3b82f6", href: "/trips" },
-  { label: "Countries Visited",value: stats.countries_visited, icon: <Map size={22} />,             color: "#10b981", href: "/trips" },
+  { label: "Trips Planned",    value: stats.trips_planned,    icon: <LayoutDashboard size={22} />, color: "#3b82f6", href: "/trips?filter=all" },
+  { label: "Countries Visited",value: stats.countries_visited, icon: <Map size={22} />,             color: "#10b981", href: "/trips?filter=booked" },
   { label: "Places Saved",     value: stats.places_saved,     icon: <MapPin size={22} />,           color: "#f59e0b", href: "/wishlist" },
-  { label: "Upcoming Trips",   value: stats.upcoming_trips,   icon: <Calendar size={22} />,         color: "#ef4444", href: "/trips" },
+  { label: "Upcoming Trips",   value: stats.upcoming_trips,   icon: <Calendar size={22} />,         color: "#ef4444", href: "/trips?filter=planned" },
 ]
 
 const RECOMMENDED = [
   { city: "Bali",      country: "Indonesia",    days: 7, price: 85000,  img: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&q=80" },
   { city: "Swiss Alps",country: "Switzerland",  days: 6, price: 120000, img: "https://images.unsplash.com/photo-1531310197839-ccf54634509e?w=400&q=80" },
-  { city: "Tokyo",     country: "Japan",        days: 5, price: 95000,  img: "https://images.unsplash.com/photo-1540959733332-e94667c61461?w=400&q=80" },
-]
-
-const ACTIVITY = [
-  { text: "Added Bali to wishlist",                date: "2 May 2025" },
-  { text: "Created new itinerary for Switzerland", date: "30 Apr 2025" },
-  { text: "Budget updated for Japan trip",         date: "28 Apr 2025" },
+  { city: "Tokyo",     country: "Japan",        days: 5, price: 95000,  img: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?w=400&q=80" },
+  { city: "London",    country: "UK",           days: 4, price: 75000,  img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&q=80" },
+  { city: "New York",  country: "USA",          days: 5, price: 155000, img: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=400&q=80" },
+  { city: "Rome",      country: "Italy",        days: 6, price: 90000,  img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&q=80" },
 ]
 
 export default function DashboardPage() {
@@ -244,7 +241,16 @@ export default function DashboardPage() {
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {recentTrips.length > 0 ? recentTrips.map((trip, i) => {
-                  const daysAway = Math.ceil((new Date(trip.start_date) - new Date()) / (1000 * 60 * 60 * 24))
+                  const today = new Date(); today.setHours(0,0,0,0);
+                  const startDate = new Date(trip.start_date); startDate.setHours(0,0,0,0);
+                  const diffTime = startDate - today;
+                  const daysAway = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                  
+                  let dateLabel = "";
+                  if (daysAway === 0) dateLabel = "Today!";
+                  else if (daysAway > 0) dateLabel = `In ${daysAway} days`;
+                  else dateLabel = "Active Now";
+
                   return (
                     <Link key={i} href="/trips" style={{ textDecoration: "none" }}>
                       <div
@@ -264,8 +270,8 @@ export default function DashboardPage() {
                             {new Date(trip.start_date).toLocaleDateString()} – {new Date(trip.end_date).toLocaleDateString()}
                           </p>
                         </div>
-                        <span style={{ fontSize: 12, color: daysAway > 0 ? "var(--gold)" : "#ef4444", fontWeight: 600, flexShrink: 0 }}>
-                          {daysAway > 0 ? `In ${daysAway} days` : "Today!"}
+                        <span style={{ fontSize: 12, color: daysAway >= 0 ? "var(--gold)" : "#10b981", fontWeight: 600, flexShrink: 0 }}>
+                          {dateLabel}
                         </span>
                       </div>
                     </Link>

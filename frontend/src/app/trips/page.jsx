@@ -1,6 +1,6 @@
 "use client"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect, Suspense } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth"
 import { getTripHistory } from "@/lib/api"
 import Sidebar from "@/components/layout/Sidebar"
@@ -13,15 +13,25 @@ const STATUS_COLORS = {
   default: { bg: "rgba(255,255,255,0.04)", color: "var(--muted)", border: "var(--border)" },
 }
 
-export default function TripsPage() {
+function TripsPageInner() {
   const { user, loading } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  
   const [trips, setTrips]         = useState([])
   const [filtered, setFiltered]   = useState([])
   const [dataLoading, setDataLoading] = useState(true)
   const [filter, setFilter]       = useState("all")
   const [search, setSearch]       = useState("")
   const { isCollapsed }           = useSidebar()
+
+  // Initialize filter from URL if present
+  useEffect(() => {
+    const urlFilter = searchParams.get("filter")
+    if (urlFilter && ["planned", "booked", "all"].includes(urlFilter)) {
+      setFilter(urlFilter)
+    }
+  }, [searchParams])
 
   useEffect(() => {
     if (!loading && user) {
@@ -38,7 +48,7 @@ export default function TripsPage() {
 
   useEffect(() => {
     let result = trips
-    if (filter !== "all") result = result.filter(t => t.status === filter)
+    if (filter !== "all") result = result.filter(t => (t.status || "planned") === filter)
     if (search.trim()) result = result.filter(t =>
       t.destination?.toLowerCase().includes(search.toLowerCase())
     )
@@ -171,5 +181,13 @@ export default function TripsPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function TripsPage() {
+  return (
+    <Suspense fallback={<LoadingScreen message="Synchronizing travel history..." />}>
+      <TripsPageInner />
+    </Suspense>
   )
 }

@@ -87,7 +87,7 @@ function ChatPageInner({ roomId = null }) {
   // Handle deep-linked destination from dashboard
   useEffect(() => {
     const dest = searchParams.get("destination")
-    if (dest && messages.length === 0 && !loading) {
+    if (dest && messages.length <= 1 && !loading) {
       const prompt = `Plan a trip to ${dest}`
       setInput(prompt)
       // Auto-send slightly after mount to feel natural
