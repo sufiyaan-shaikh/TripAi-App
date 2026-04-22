@@ -26,6 +26,12 @@ const RECOMMENDED = [
   { city: "Rome",      country: "Italy",        days: 6, price: 90000,  img: "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&q=80" },
 ]
 
+const ACTIVITY = [
+  { text: "Added Bali to wishlist",                date: "2 May 2025" },
+  { text: "Created new itinerary for Switzerland", date: "30 Apr 2025" },
+  { text: "Budget updated for Japan trip",         date: "28 Apr 2025" },
+]
+
 export default function DashboardPage() {
   const { user, loading } = useAuth()
   const router = useRouter()
