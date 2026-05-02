@@ -17,7 +17,7 @@ function TripsPageInner() {
   const { user, loading } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
-  
+
   const [trips, setTrips]         = useState([])
   const [filtered, setFiltered]   = useState([])
   const [dataLoading, setDataLoading] = useState(true)
@@ -25,7 +25,6 @@ function TripsPageInner() {
   const [search, setSearch]       = useState("")
   const { isCollapsed }           = useSidebar()
 
-  // Initialize filter from URL if present
   useEffect(() => {
     const urlFilter = searchParams.get("filter")
     if (urlFilter && ["planned", "booked", "all"].includes(urlFilter)) {
@@ -65,8 +64,8 @@ function TripsPageInner() {
       <Sidebar />
 
       <div style={{ marginLeft: isCollapsed ? 80 : 260, transition: "margin-left 0.3s ease", padding: "80px 40px 60px", maxWidth: 1100, margin: "0 auto 0 auto", paddingLeft: isCollapsed ? 120 : 300 }}>
-        
-        {/* Header */}
+
+        {}
         <div style={{ marginBottom: 40, animation: "fadeUp 0.5s ease" }}>
           <p className="section-label" style={{ marginBottom: 8 }}>Travel History</p>
           <h1 style={{
@@ -80,7 +79,7 @@ function TripsPageInner() {
           </p>
         </div>
 
-        {/* Filter Bar */}
+        {}
         <div style={{ display: "flex", gap: 12, marginBottom: 32, flexWrap: "wrap", animation: "fadeUp 0.5s ease 0.1s both" }}>
           <input
             value={search}
@@ -107,7 +106,7 @@ function TripsPageInner() {
           ))}
         </div>
 
-        {/* Trips Grid */}
+        {}
         {filtered.length === 0 ? (
           <div className="glass" style={{ borderRadius: 20, padding: 60, textAlign: "center", border: "1px dashed var(--border)" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>🗺️</div>
@@ -133,7 +132,7 @@ function TripsPageInner() {
                     display: "flex", flexDirection: "column", gap: 16,
                   }}
                 >
-                  {/* Top Row */}
+                  {}
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                     <div>
                       <h3 style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 700, color: "var(--white)", marginBottom: 4 }}>
@@ -152,7 +151,7 @@ function TripsPageInner() {
                     </span>
                   </div>
 
-                  {/* Meta */}
+                  {}
                   <div style={{ display: "flex", gap: 16, borderTop: "1px solid var(--border)", paddingTop: 16 }}>
                     <div>
                       <p style={{ fontSize: 11, color: "var(--muted)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>Duration</p>
@@ -164,7 +163,7 @@ function TripsPageInner() {
                     </div>
                   </div>
 
-                  {/* Actions */}
+                  {}
                   <div style={{ display: "flex", gap: 8 }}>
                     <button
                       onClick={() => router.push("/chat")}

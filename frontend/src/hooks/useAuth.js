@@ -5,7 +5,7 @@ import { getCurrentUser, getStoredUser, isLoggedIn, clearTokens } from "@/lib/au
 
 export function useAuth() {
   const router = useRouter()
-  // Immediately populate from localStorage — no loading flash
+
   const [user, setUser]       = useState(() => {
     if (typeof window === "undefined") return null
     return getStoredUser()
@@ -21,7 +21,6 @@ export function useAuth() {
       return
     }
 
-    // User is cached — show immediately, then silently re-validate in background
     const silentRevalidate = async () => {
       try {
         const freshUser = await getCurrentUser()
@@ -32,7 +31,7 @@ export function useAuth() {
         }
         setUser(freshUser)
       } catch {
-        // Token expired — kick to login
+
         clearTokens()
         router.push("/auth/login")
       } finally {

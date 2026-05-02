@@ -17,7 +17,6 @@ def save_trip(user_id: str, trip_data: dict) -> dict:
     }).execute()
     return response.data[0] if response.data else None
 
-
 def get_trip_by_id(trip_id: str) -> dict:
     supabase = get_supabase_admin()
     trip = supabase.table("trips").select("*").eq("id", trip_id).single().execute()
@@ -33,7 +32,6 @@ def get_trip_by_id(trip_id: str) -> dict:
         "itinerary": itinerary.data
     }
 
-
 def get_user_trips(user_id: str) -> list:
     supabase = get_supabase_admin()
     response = supabase.table("trips")\
@@ -42,7 +40,6 @@ def get_user_trips(user_id: str) -> list:
         .order("created_at", desc=True)\
         .execute()
     return response.data
-
 
 def update_trip_status(trip_id: str, status: str) -> dict:
     supabase = get_supabase_admin()

@@ -54,7 +54,7 @@ export default function Sidebar() {
       top: 0,
       zIndex: 100,
     }}>
-      {/* Brand */}
+      {}
       <div style={{ padding: isCollapsed ? "32px 0" : "32px 24px", flexShrink: 0, display: "flex", justifyContent: "center" }}>
         {isCollapsed ? (
           <span style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 700, color: "var(--white)" }}>T</span>
@@ -65,7 +65,7 @@ export default function Sidebar() {
         )}
       </div>
 
-      {/* Navigation */}
+      {}
       <nav style={{ flex: 1, padding: "0 16px", display: "flex", flexDirection: "column", gap: 8, overflowY: "auto", overflowX: "hidden" }}>
         {navItems.map((item) => {
           const isActive = pathname === item.path
@@ -93,7 +93,7 @@ export default function Sidebar() {
         })}
       </nav>
 
-      {/* Toggle Button */}
+      {}
       <div style={{ padding: "0 16px 16px", display: "flex", justifyContent: "center", flexShrink: 0 }}>
         <button
           onClick={toggleSidebar}
@@ -111,7 +111,7 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* User / Footer */}
+      {}
       <div style={{ padding: isCollapsed ? "16px 8px" : "24px 16px", borderTop: "1px solid var(--border)", flexShrink: 0 }}>
         <div className="glass" style={{
           borderRadius: 16, padding: isCollapsed ? "12px 0" : "16px",

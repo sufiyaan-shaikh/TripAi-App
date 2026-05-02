@@ -47,7 +47,7 @@ export default function WishlistPage() {
     <div style={{ minHeight: "100vh", background: "var(--navy)", color: "var(--white)" }}>
       <Sidebar />
       <div style={{ marginLeft: isCollapsed ? 80 : 260, transition: "margin-left 0.3s ease", padding: 40, maxWidth: 1200, margin: "0 auto", paddingLeft: isCollapsed ? 120 : 300 }}>
-        
+
         <div style={{ marginBottom: 40, animation: "fadeUp 0.5s ease" }}>
           <p className="section-label" style={{ marginBottom: 8 }}>My Collection</p>
           <h1 style={{ 

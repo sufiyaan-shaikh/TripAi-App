@@ -3,7 +3,7 @@ const REFRESH_KEY = "tripai_refresh"
 const USER_KEY    = "tripai_user"
 
 let BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://127.0.0.1:8000"
-// Force IPv4 loopback to avoid Windows fetch issues without needing a dev server restart
+
 if (BACKEND_URL.includes("localhost")) {
   BACKEND_URL = BACKEND_URL.replace("localhost", "127.0.0.1")
 }

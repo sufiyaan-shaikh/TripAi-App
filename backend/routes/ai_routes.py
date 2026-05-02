@@ -9,20 +9,16 @@ from services.prompts import build_trip_planning_prompt, build_general_prompt
 
 router = APIRouter()
 
-
 class Message(BaseModel):
     role: str
     content: str
-
 
 class ChatRequest(BaseModel):
     messages: List[Message]
     room_id: Optional[str] = None
 
-
 class ChatResponse(BaseModel):
     reply: str
-
 
 @router.post("/chat", response_model=ChatResponse)
 async def ai_chat(
@@ -53,7 +49,7 @@ async def ai_chat(
                         "role": "user",
                         "content": last_user_msg["content"]
                     }).execute()
-                
+
                 supabase.table("chat_messages").insert({
                     "room_id": payload.room_id,
                     "role": "assistant",

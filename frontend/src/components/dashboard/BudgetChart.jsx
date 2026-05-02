@@ -3,9 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { Edit2, Check, X } from "lucide-react";
 
-/**
- * BudgetChart — Enhanced with manual budget setting and percentage labels.
- */
 const BudgetChart = ({ data }) => {
   const [totalBudget, setTotalBudget] = useState(100000);
   const [isEditing, setIsEditing] = useState(false);
@@ -37,8 +34,7 @@ const BudgetChart = ({ data }) => {
   ];
 
   const chartData = data || DEFAULT_DATA;
-  
-  // Custom label to show percentages on the chart
+
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -78,7 +74,7 @@ const BudgetChart = ({ data }) => {
           </div>
         )}
       </div>
-      
+
       <div style={{ flex: 1, position: 'relative' }}>
         <ResponsiveContainer width="100%" height={240}>
           <PieChart>
@@ -105,8 +101,8 @@ const BudgetChart = ({ data }) => {
             <Legend verticalAlign="bottom" height={36}/>
           </PieChart>
         </ResponsiveContainer>
-        
-        {/* Center Text */}
+
+        {}
         <div style={{
           position: 'absolute',
           top: '50%',

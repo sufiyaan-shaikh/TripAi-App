@@ -8,7 +8,6 @@ async def chat(messages: list, system_prompt: str = "") -> str:
     else:
         raise ValueError(f"Unknown AI provider: {AI_PROVIDER}")
 
-
 async def _groq_chat(messages: list, system_prompt: str) -> str:
     from groq import Groq
     client = Groq(api_key=GROQ_API_KEY)
@@ -25,7 +24,6 @@ async def _groq_chat(messages: list, system_prompt: str) -> str:
         max_tokens=4096
     )
     return response.choices[0].message.content
-
 
 async def _claude_chat(messages: list, system_prompt: str) -> str:
     import anthropic

@@ -3,12 +3,6 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from config.supabase import get_supabase
 from db.user_db import get_user_by_auth_id
 
-# ============================================
-# AUTH MIDDLEWARE
-# Attach to any route that needs login:
-# async def my_route(user=Depends(get_current_user)):
-# ============================================
-
 security = HTTPBearer()
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
@@ -26,7 +20,7 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         user = get_user_by_auth_id(auth_response.user.id)
 
         if not user:
-            # Self-healing: Create profile if missing but auth is valid
+
             from db.user_db import create_user
             user = create_user(
                 auth_id=auth_response.user.id,
@@ -49,7 +43,6 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials."
         )
-
 
 async def get_current_user_optional(
     credentials: HTTPAuthorizationCredentials = Depends(HTTPBearer(auto_error=False))

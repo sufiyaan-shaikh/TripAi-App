@@ -1,8 +1,4 @@
-# ============================================
-# TRIPAI — PDF Ticket Generation
-# backend/services/pdf_service.py
-# Uses ReportLab to generate trip ticket PDF
-# ============================================
+
 
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
@@ -18,11 +14,6 @@ import requests
 import qrcode
 from datetime import datetime
 
-
-# ============================================
-# COLOURS
-# ============================================
-
 DARK_BG     = colors.HexColor("#0f172a")
 BLUE        = colors.HexColor("#3b82f6")
 LIGHT_BLUE  = colors.HexColor("#eff6ff")
@@ -31,11 +22,6 @@ LIGHT_GRAY  = colors.HexColor("#f1f5f9")
 WHITE       = colors.white
 GREEN       = colors.HexColor("#22c55e")
 DARK_TEXT   = colors.HexColor("#1e293b")
-
-
-# ============================================
-# STYLES
-# ============================================
 
 def get_styles():
     return {
@@ -123,11 +109,6 @@ def get_styles():
         ),
     }
 
-
-# ============================================
-# HELPER — info grid table
-# ============================================
-
 def info_grid(data: list, styles: dict, col_widths=None):
     """
     data = [
@@ -156,16 +137,11 @@ def info_grid(data: list, styles: dict, col_widths=None):
     ]))
     return t
 
-
-# ============================================
-# HELPER - Fetch city image
-# ============================================
-
 def fetch_city_image(destination: str, width: int = 600, height: int = 300) -> BytesIO:
     """Fetches a city cover image from Unsplash as a buffer."""
     try:
         encoded = requests.utils.quote(f"{destination} travel")
-        # Modern Unsplash format
+
         url = f"https://images.unsplash.com/photo-1?auto=format&fit=crop&w={width}&q=80&keywords={encoded}"
         response = requests.get(url, timeout=3)
         if response.status_code == 200:
@@ -173,11 +149,6 @@ def fetch_city_image(destination: str, width: int = 600, height: int = 300) -> B
     except Exception as e:
         print(f"IMAGE FETCH ERROR: {e}")
     return None
-
-
-# ============================================
-# HELPER - Generate QR code
-# ============================================
 
 def generate_qr_code(url: str) -> BytesIO:
     """Generates a QR code image as a buffer."""
@@ -193,11 +164,6 @@ def generate_qr_code(url: str) -> BytesIO:
     except Exception as e:
         print(f"QR GEN ERROR: {e}")
     return None
-
-
-# ============================================
-# MAIN FUNCTION
-# ============================================
 
 def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = None) -> bytes:
     """
@@ -227,10 +193,7 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
 
     styles = get_styles()
     story  = []
-    W      = PAGE_W - 2 * MARGIN   # usable width
-
-
-    # ── HEADER BANNER ────────────────────────────────────────
+    W      = PAGE_W - 2 * MARGIN   
 
     header_data = [[
         Paragraph("TripAI", styles["title"]),
@@ -258,9 +221,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
     story.append(subtitle_table)
     story.append(Spacer(1, 4))
 
-
-    # ── CITY COVER IMAGE (PRO FEATURE) ───────────────────────
-    
     city_name = trip_data.get("destination", "Explore")
     img_buffer = fetch_city_image(city_name, width=540, height=180)
     if img_buffer:
@@ -269,7 +229,7 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
             story.append(city_img)
             story.append(Spacer(1, 10))
         except:
-            # Fallback gold banner if image load fails
+
             banner = Table([[""]], colWidths=[W], rowHeights=[30*mm])
             banner.setStyle(TableStyle([
                 ("BACKGROUND", (0,0), (-1,-1), colors.HexColor("#f59e0b")),
@@ -278,7 +238,7 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
             story.append(banner)
             story.append(Spacer(1, 10))
     else:
-        # Fallback banner if image fetch fails
+
         banner = Table([[""]], colWidths=[W], rowHeights=[30*mm])
         banner.setStyle(TableStyle([
             ("BACKGROUND", (0,0), (-1,-1), colors.HexColor("#f59e0b")),
@@ -287,13 +247,9 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
         story.append(banner)
         story.append(Spacer(1, 10))
 
-    # Confirmed badge
     if payment_data and payment_data.get("status") == "success":
         story.append(Paragraph("BOOKING CONFIRMED", styles["confirmed"]))
     story.append(Spacer(1, 8))
-
-
-    # ── BOOKING REFERENCE ────────────────────────────────────
 
     ref = payment_data.get("stripe_payment_intent_id", "N/A")[:20] if payment_data else "N/A"
     issued = datetime.now().strftime("%d %b %Y, %I:%M %p")
@@ -306,9 +262,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
     ], styles, col_widths=[W * 0.4, W * 0.35, W * 0.25]))
     story.append(Spacer(1, 8))
 
-
-    # ── PASSENGER INFO ───────────────────────────────────────
-
     story.append(Paragraph("PASSENGER", styles["section_header"]))
     story.append(HRFlowable(width=W, thickness=0.5, color=LIGHT_GRAY, spaceAfter=6))
 
@@ -320,9 +273,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
         ]
     ], styles, col_widths=[W * 0.35, W * 0.40, W * 0.25]))
     story.append(Spacer(1, 8))
-
-
-    # ── TRIP OVERVIEW ─────────────────────────────────────────
 
     story.append(Paragraph("TRIP OVERVIEW", styles["section_header"]))
     story.append(HRFlowable(width=W, thickness=0.5, color=LIGHT_GRAY, spaceAfter=6))
@@ -345,9 +295,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
         ]
     ], styles, col_widths=[W * 0.35, W * 0.35, W * 0.30]))
     story.append(Spacer(1, 8))
-
-
-    # ── FLIGHT DETAILS ────────────────────────────────────────
 
     flight = trip_data.get("flight")
     if flight:
@@ -374,9 +321,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
         ], styles, col_widths=[W * 0.30, W * 0.20, W * 0.25, W * 0.25]))
         story.append(Spacer(1, 8))
 
-
-    # ── HOTEL DETAILS ─────────────────────────────────────────
-
     hotel = trip_data.get("hotel")
     if hotel:
         story.append(Paragraph("HOTEL DETAILS", styles["section_header"]))
@@ -400,9 +344,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
             ]
         ], styles, col_widths=[W * 0.25, W * 0.25, W * 0.20, W * 0.30]))
         story.append(Spacer(1, 8))
-
-
-    # ── ITINERARY ────────────────────────────────────────────
 
     itinerary = trip_data.get("itinerary", [])
     if itinerary:
@@ -430,9 +371,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
 
         story.append(Spacer(1, 4))
 
-
-    # ── COST SUMMARY ─────────────────────────────────────────
-
     story.append(Paragraph("COST SUMMARY", styles["section_header"]))
     story.append(HRFlowable(width=W, thickness=0.5, color=LIGHT_GRAY, spaceAfter=6))
 
@@ -442,8 +380,7 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
         total         = float(payment_data.get("amount") or 0)
         flight_cost   = float(payment_data.get("flight_cost") or 0)
         hotel_cost    = float(payment_data.get("hotel_cost") or 0)
-        
-        # Fallback for dynamic mock layout incase db is strictly zero
+
         if flight_cost == 0 and hotel_cost == 0:
             flight_cost = (total - tax - platform_fee) * 0.40
             hotel_cost  = (total - tax - platform_fee) * 0.60
@@ -466,23 +403,23 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
 
     cost_table = Table(cost_rows, colWidths=[W * 0.65, W * 0.35])
     cost_table.setStyle(TableStyle([
-        # Header row
+
         ("BACKGROUND",    (0, 0), (-1, 0), DARK_BG),
         ("TEXTCOLOR",     (0, 0), (-1, 0), WHITE),
         ("FONTNAME",      (0, 0), (-1, 0), "Helvetica-Bold"),
         ("FONTSIZE",      (0, 0), (-1, 0), 9),
         ("ALIGN",         (1, 0), (1, -1), "RIGHT"),
-        # Body rows
+
         ("FONTNAME",      (0, 1), (-1, -2), "Helvetica"),
         ("FONTSIZE",      (0, 1), (-1, -2), 9),
         ("TEXTCOLOR",     (0, 1), (-1, -2), DARK_TEXT),
         ("ROWBACKGROUNDS",(0, 1), (-1, -2), [WHITE, LIGHT_GRAY]),
-        # Total row
+
         ("BACKGROUND",    (0, -1), (-1, -1), BLUE),
         ("TEXTCOLOR",     (0, -1), (-1, -1), WHITE),
         ("FONTNAME",      (0, -1), (-1, -1), "Helvetica-Bold"),
         ("FONTSIZE",      (0, -1), (-1, -1), 11),
-        # Padding
+
         ("TOPPADDING",    (0, 0), (-1, -1), 6),
         ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
         ("LEFTPADDING",   (0, 0), (-1, -1), 8),
@@ -491,9 +428,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
     ]))
     story.append(cost_table)
     story.append(Spacer(1, 12))
-
-
-    # ── FOOTER ───────────────────────────────────────────────
 
     story.append(HRFlowable(width=W, thickness=0.5, color=LIGHT_GRAY, spaceAfter=6))
     story.append(Paragraph(
@@ -506,12 +440,9 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
     ))
     story.append(Spacer(1, 10))
 
-    # ── QR CODE (PRO FEATURE) ────────────────────────────────
-    
-    # Generate live URL: domain + chat + destination (or trip_id if tracked)
     frontend_domain = "https://trip-ai-app-git-main-sufiyaan-shaikhs-projects.vercel.app"
     live_url = f"{frontend_domain}/chat?destination={requests.utils.quote(city_name)}"
-    
+
     qr_buffer = generate_qr_code(live_url)
     if qr_buffer:
         try:
@@ -527,9 +458,6 @@ def generate_trip_ticket(trip_data: dict, user_data: dict, payment_data: dict = 
             story.append(qr_table)
         except:
             pass
-
-
-    # ── BUILD ────────────────────────────────────────────────
 
     doc.build(story)
     buffer.seek(0)

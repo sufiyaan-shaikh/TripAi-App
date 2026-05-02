@@ -23,7 +23,7 @@ export default function LoadingScreen({ message = "Loading your travel hub..." }
       overflow: "hidden",
     }}>
 
-      {/* Ambient radial glows */}
+      {}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
         background: `
@@ -32,7 +32,7 @@ export default function LoadingScreen({ message = "Loading your travel hub..." }
         `,
       }} />
 
-      {/* Animated concentric rings */}
+      {}
       <div style={{ position: "relative", width: 160, height: 160, marginBottom: 48 }}>
         {[0, 1, 2].map(i => (
           <div key={i} style={{
@@ -44,7 +44,7 @@ export default function LoadingScreen({ message = "Loading your travel hub..." }
           }} />
         ))}
 
-        {/* Center animated compass */}
+        {}
         <div style={{
           position: "absolute", inset: 0,
           display: "flex", alignItems: "center", justifyContent: "center",
@@ -65,14 +65,14 @@ export default function LoadingScreen({ message = "Loading your travel hub..." }
         </div>
       </div>
 
-      {/* Brand */}
+      {}
       <div style={{ marginBottom: 8, animation: "fadeUp 0.6s ease" }}>
         <span style={{ fontFamily: "var(--font-display)", fontSize: 22, fontWeight: 700, color: "var(--white)" }}>
           Trip<span style={{ color: "var(--gold)" }}>AI</span>
         </span>
       </div>
 
-      {/* Status message with animated dots */}
+      {}
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 56, animation: "fadeUp 0.6s ease 0.1s both" }}>
         <p style={{ fontSize: 14, color: "var(--muted)" }}>{message}</p>
         <div style={{ display: "flex", gap: 4 }}>
@@ -86,7 +86,7 @@ export default function LoadingScreen({ message = "Loading your travel hub..." }
         </div>
       </div>
 
-      {/* Travel quote */}
+      {}
       <div style={{
         maxWidth: 420, textAlign: "center",
         padding: "24px 32px",
@@ -103,7 +103,7 @@ export default function LoadingScreen({ message = "Loading your travel hub..." }
         </p>
       </div>
 
-      {/* Animations */}
+      {}
       <style>{`
         @keyframes ping-ring {
           0%   { transform: scale(0.8); opacity: 0.6; }

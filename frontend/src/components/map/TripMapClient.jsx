@@ -45,7 +45,6 @@ function getWeatherInfo(code) {
   return WMO_CODES[code] || { label: "Unknown", icon: "🌡️" }
 }
 
-// Create a premium gold marker using SVG
 const createGoldIcon = (label) => {
   return new L.DivIcon({
     className: "custom-gold-marker",
@@ -63,7 +62,6 @@ const createGoldIcon = (label) => {
   })
 }
 
-// Auto-center map component whenever destination changes
 function MapUpdater({ center }) {
   const map = useMap()
   useEffect(() => {
@@ -95,7 +93,7 @@ export default function TripMapClient({ destination }) {
           const lat = parseFloat(geoData[0].lat)
           const lon = parseFloat(geoData[0].lon)
           setCoords([lat, lon])
-          // Fetch weather from Open-Meteo (free, no API key)
+
           const wxRes = await fetch(
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode,windspeed_10m,relative_humidity_2m&timezone=auto`
           )
@@ -120,8 +118,8 @@ export default function TripMapClient({ destination }) {
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: 24, overflow: "hidden", border: "1px solid var(--border)", boxShadow: "0 20px 50px rgba(0,0,0,0.3)" }}>
-      
-      {/* Destination Info Overlay */}
+
+      {}
       <div style={{
         position: "absolute", top: 20, left: 20, zIndex: 1000,
         background: "rgba(15, 23, 42, 0.82)", backdropFilter: "blur(14px)",
@@ -137,7 +135,7 @@ export default function TripMapClient({ destination }) {
         </div>
       </div>
 
-      {/* Theme Toggle Button */}
+      {}
       <div style={{ position: "absolute", top: 20, right: 20, zIndex: 1000, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8 }}>
         <button 
           onClick={() => setShowThemeMenu(!showThemeMenu)}
@@ -171,7 +169,7 @@ export default function TripMapClient({ destination }) {
         )}
       </div>
 
-      {/* Live Weather Overlay */}
+      {}
       {weather && (
         <div style={{
           position: "absolute", bottom: 60, left: 20, zIndex: 1000,

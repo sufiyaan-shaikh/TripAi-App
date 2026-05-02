@@ -6,7 +6,6 @@ const SidebarContext = createContext()
 export function SidebarProvider({ children }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
 
-  // Persist state to localStorage if desired
   useEffect(() => {
     const saved = localStorage.getItem("sidebar_collapsed")
     if (saved === "true") setIsCollapsed(true)

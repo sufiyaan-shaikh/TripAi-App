@@ -23,10 +23,9 @@ export function useChat(roomId = null) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
-  // Fetch initial room messages if in a multiplayer room
   useEffect(() => {
     if (!roomId) return;
-    
+
     const fetchRoom = async () => {
       try {
         const res = await fetch(`${BACKEND_URL}/api/multiplayer/room/${roomId}`, {
@@ -46,7 +45,6 @@ export function useChat(roomId = null) {
     fetchRoom()
   }, [roomId])
 
-  // Subscribe to Realtime if in a multiplayer room
   useEffect(() => {
     if (!roomId || !supabaseClient) return;
 
@@ -55,7 +53,7 @@ export function useChat(roomId = null) {
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "chat_messages", filter: `room_id=eq.${roomId}` }, (payload) => {
         const newMsg = payload.new;
         setMessages(prev => {
-          // Prevent duplicates if we already optimistically added it
+
           const isDuplicate = prev.some(m => m.content === newMsg.content && m.role === newMsg.role)
           if (isDuplicate) return prev;
           return [...prev, { role: newMsg.role, content: newMsg.content }]
@@ -65,7 +63,6 @@ export function useChat(roomId = null) {
 
     return () => { supabaseClient.removeChannel(channel) }
   }, [roomId])
-
 
   const sendMessage = useCallback(async (userInput) => {
     if (!userInput.trim() || loading) return
@@ -92,8 +89,6 @@ export function useChat(roomId = null) {
       const data = await res.json()
       if (!res.ok) throw new Error(data.detail || "AI service failed")
 
-      // If we are NOT in a multiplayer room, we must manually append the assistant reply
-      // If we ARE in a multiplayer room, Supabase Realtime will broadcast the AI reply to us so we don't need to manually append it.
       if (!roomId) {
         setMessages(prev => [...prev, { role: "assistant", content: data.reply }])
       }

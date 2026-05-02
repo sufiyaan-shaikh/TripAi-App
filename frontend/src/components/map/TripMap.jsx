@@ -1,7 +1,6 @@
 "use client"
 import dynamic from 'next/dynamic'
 
-// Dynamically import the map to fix "window is not defined" because leaflet manipulates the DOM immediately
 const TripMapClient = dynamic(() => import('./TripMapClient'), { 
   ssr: false,
   loading: () => (

@@ -1,7 +1,4 @@
-# ============================================
-# TRIPAI — PDF Routes
-# backend/routes/pdf_routes.py
-# ============================================
+
 
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import Response
@@ -12,16 +9,14 @@ from config.supabase import get_supabase
 
 router = APIRouter()
 
-
 @router.get("/generate")
 async def generate_pdf(trip_id: str, user=Depends(get_current_user)):
     try:
-        # Try to get real trip data — fall back to empty dict if not found
+
         trip = None
         if trip_id and trip_id != "null" and trip_id != "test-trip-id":
             trip = get_trip_by_id(trip_id)
 
-        # If no real trip found, use a minimal placeholder so PDF still generates
         if not trip:
             trip = {
                 "destination":   "Your Destination",
@@ -33,8 +28,7 @@ async def generate_pdf(trip_id: str, user=Depends(get_current_user)):
                 "total_cost":    50000,
                 "currency":      "INR",
             }
-        
-        # Inject mock flight and hotel data if they are empty (for prototype)
+
         if not trip.get("flight"):
             trip["flight"] = {
                 "outbound_airline": "Skyward Airlines",
@@ -46,7 +40,7 @@ async def generate_pdf(trip_id: str, user=Depends(get_current_user)):
                 "return_cabin_class": "Economy",
                 "return_price": trip.get("total_cost", 100000) * 0.40
             }
-        
+
         if not trip.get("hotel"):
             trip["hotel"] = {
                 "hotel_name": f"The Grand {trip.get('destination', 'City')} Hotel",
@@ -58,7 +52,6 @@ async def generate_pdf(trip_id: str, user=Depends(get_current_user)):
                 "total_hotel_cost": trip.get("total_cost", 100000) * 0.60
             }
 
-        # Try to get payment data
         payment_data = None
         if trip_id and trip_id not in ["null", "test-trip-id"]:
             try:
@@ -76,7 +69,6 @@ async def generate_pdf(trip_id: str, user=Depends(get_current_user)):
             except Exception as payment_err:
                 print(f"Payment lookup warning (non-critical): {payment_err}")
 
-        # Generate PDF
         pdf_bytes = generate_trip_ticket(
             trip_data=trip,
             user_data=user,

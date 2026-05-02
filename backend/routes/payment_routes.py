@@ -1,7 +1,4 @@
-# ============================================
-# TRIPAI — Payment Routes
-# backend/routes/payment_routes.py
-# ============================================
+
 
 from fastapi import APIRouter, HTTPException, Depends, Request, Header
 from pydantic import BaseModel
@@ -17,21 +14,14 @@ from config.stripe import get_publishable_key
 
 router = APIRouter()
 
-
-# ============================================
-# REQUEST MODELS
-# ============================================
-
 class CreateIntentRequest(BaseModel):
     trip_id:        str
     amount_inr:     float
     flight_cost:    float = 0
     hotel_cost:     float = 0
 
-
 class ConfirmPaymentRequest(BaseModel):
     payment_intent_id: str
-
 
 class SaveCardRequest(BaseModel):
     payment_method_id:  str
@@ -40,21 +30,9 @@ class SaveCardRequest(BaseModel):
     card_expiry:        str
     set_as_default:     bool = True
 
-
-# ============================================
-# GET STRIPE PUBLISHABLE KEY
-# GET /api/payment/config
-# ============================================
-
 @router.get("/config")
 async def get_config():
     return {"publishable_key": get_publishable_key()}
-
-
-# ============================================
-# CREATE PAYMENT INTENT
-# POST /api/payment/create-intent
-# ============================================
 
 @router.post("/create-intent")
 async def create_intent(
@@ -74,12 +52,6 @@ async def create_intent(
         print(f"PAYMENT ERROR: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
-
-# ============================================
-# CONFIRM PAYMENT
-# POST /api/payment/confirm
-# ============================================
-
 @router.post("/confirm")
 async def confirm(
     payload: ConfirmPaymentRequest,
@@ -94,12 +66,6 @@ async def confirm(
     except Exception as e:
         print(f"CONFIRM ERROR: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
-
-
-# ============================================
-# SAVE CARD TOKEN
-# POST /api/payment/save-card
-# ============================================
 
 @router.post("/save-card")
 async def add_card(
@@ -120,12 +86,6 @@ async def add_card(
         print(f"SAVE CARD ERROR: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
-
-# ============================================
-# GET SAVED CARDS
-# GET /api/payment/cards
-# ============================================
-
 @router.get("/cards")
 async def get_cards(user=Depends(get_current_user)):
     try:
@@ -135,12 +95,6 @@ async def get_cards(user=Depends(get_current_user)):
         print(f"GET CARDS ERROR: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
 
-
-# ============================================
-# GET PAYMENT HISTORY
-# GET /api/payment/history
-# ============================================
-
 @router.get("/history")
 async def payment_history(user=Depends(get_current_user)):
     try:
@@ -149,12 +103,6 @@ async def payment_history(user=Depends(get_current_user)):
     except Exception as e:
         print(f"HISTORY ERROR: {str(e)}")
         raise HTTPException(status_code=400, detail=str(e))
-
-
-# ============================================
-# STRIPE WEBHOOK
-# POST /api/payment/webhook
-# ============================================
 
 @router.post("/webhook")
 async def stripe_webhook(

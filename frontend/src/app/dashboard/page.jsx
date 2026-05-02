@@ -72,7 +72,7 @@ export default function DashboardPage() {
     <div style={{ minHeight: "100vh", background: "var(--navy)", color: "var(--white)" }}>
       <Sidebar />
 
-      {/* Toast Notification */}
+      {}
       {toast && (
         <div style={{
           position: "fixed", top: 24, right: 24, zIndex: 9999,
@@ -85,7 +85,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Search Overlay */}
+      {}
       {searchOpen && (
         <div
           style={{ position: "fixed", inset: 0, zIndex: 500, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(6px)", display: "flex", alignItems: "center", justifyContent: "center" }}
@@ -114,7 +114,7 @@ export default function DashboardPage() {
 
       <div style={{ marginLeft: isCollapsed ? 80 : 260, transition: "margin-left 0.3s ease", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
 
-        {/* HEADER */}
+        {}
         <header style={{
           padding: "20px 40px", display: "flex", justifyContent: "space-between", alignItems: "center",
           borderBottom: "1px solid var(--border)", background: "rgba(2,6,23,0.8)",
@@ -154,7 +154,7 @@ export default function DashboardPage() {
 
         <main style={{ padding: "32px 40px", display: "flex", flexDirection: "column", gap: 28 }}>
 
-          {/* STATS ROW */}
+          {}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
             {STAT_CARDS(stats).map((card, i) => (
               <Link key={i} href={card.href} style={{ textDecoration: "none" }}>
@@ -174,10 +174,10 @@ export default function DashboardPage() {
             ))}
           </div>
 
-          {/* RECOMMENDATIONS + BUDGET */}
+          {}
           <div style={{ display: "grid", gridTemplateColumns: "1.8fr 1.2fr", gap: 28 }}>
 
-            {/* Recommendations */}
+            {}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, margin: 0 }}>Recommended for You</h3>
@@ -224,7 +224,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Budget Chart */}
+            {}
             <Link href="/budget" style={{ textDecoration: "none", animation: "fadeUp 0.4s ease 0.5s both" }}>
               <div style={{ height: "100%", cursor: "pointer" }}>
                 <BudgetChart />
@@ -232,10 +232,10 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          {/* UPCOMING TRIPS + ACTIVITY */}
+          {}
           <div style={{ display: "grid", gridTemplateColumns: "1.8fr 1.2fr", gap: 28 }}>
 
-            {/* Upcoming Trips */}
+            {}
             <div className="glass" style={{ borderRadius: 18, padding: "22px 24px", animation: "fadeUp 0.4s ease 0.6s both" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
                 <h3 style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, margin: 0 }}>Upcoming Trips</h3>
@@ -251,7 +251,7 @@ export default function DashboardPage() {
                   const startDate = new Date(trip.start_date); startDate.setHours(0,0,0,0);
                   const diffTime = startDate - today;
                   const daysAway = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                  
+
                   let dateLabel = "";
                   if (daysAway === 0) dateLabel = "Today!";
                   else if (daysAway > 0) dateLabel = `In ${daysAway} days`;
@@ -293,7 +293,7 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* Recent Activity */}
+            {}
             <div className="glass" style={{ borderRadius: 18, padding: "22px 24px", animation: "fadeUp 0.4s ease 0.7s both" }}>
               <h3 style={{ fontFamily: "var(--font-display)", fontSize: 18, fontWeight: 700, margin: "0 0 18px 0" }}>Recent Activity</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>

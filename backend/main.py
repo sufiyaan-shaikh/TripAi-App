@@ -1,7 +1,4 @@
-# ============================================
-# TRIPAI — App Entry Point
-# backend/main.py
-# ============================================
+
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -25,8 +22,6 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS Policy - Allow everything for smoother initial cloud setup, 
-# or restrict to specific production domains if FRONTEND_URL is set.
 allowed_origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",

@@ -5,12 +5,10 @@ from config.supabase import get_supabase_admin
 
 router = APIRouter()
 
-
 class WishlistItem(BaseModel):
     destination: str
     country: str = ""
     notes: str = ""
-
 
 @router.get("/")
 def get_wishlist(user=Depends(get_current_user)):
@@ -20,7 +18,6 @@ def get_wishlist(user=Depends(get_current_user)):
         return {"items": res.data or []}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 @router.post("/")
 def add_to_wishlist(item: WishlistItem, user=Depends(get_current_user)):
@@ -35,7 +32,6 @@ def add_to_wishlist(item: WishlistItem, user=Depends(get_current_user)):
         return {"item": res.data[0] if res.data else {}}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 @router.delete("/{item_id}")
 def remove_from_wishlist(item_id: str, user=Depends(get_current_user)):

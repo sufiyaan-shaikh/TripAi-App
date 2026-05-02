@@ -9,7 +9,6 @@ def create_user(auth_id: str, email: str, full_name: str):
     }).execute()
     return response.data[0] if response.data else None
 
-
 def get_user_by_auth_id(auth_id: str):
     supabase = get_supabase_admin()
     response = supabase.table("users")\
@@ -19,7 +18,6 @@ def get_user_by_auth_id(auth_id: str):
         .execute()
     return response.data
 
-
 def update_user(user_id: str, updates: dict):
     supabase = get_supabase_admin()
     response = supabase.table("users")\
@@ -27,7 +25,6 @@ def update_user(user_id: str, updates: dict):
         .eq("id", user_id)\
         .execute()
     return response.data[0] if response.data else None
-
 
 def get_or_create_preferences(user_id: str):
     supabase = get_supabase_admin()
@@ -43,7 +40,6 @@ def get_or_create_preferences(user_id: str):
         "user_id": user_id
     }).execute()
     return new_prefs.data[0] if new_prefs.data else None
-
 
 def update_preferences(user_id: str, updates: dict):
     supabase = get_supabase_admin()

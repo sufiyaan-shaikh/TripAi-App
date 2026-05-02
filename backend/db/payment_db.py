@@ -1,10 +1,6 @@
-# ============================================
-# TRIPAI — Payment Database Operations
-# backend/db/payment_db.py
-# ============================================
+
 
 from config.supabase import get_supabase
-
 
 def save_payment(
     user_id: str,
@@ -35,7 +31,6 @@ def save_payment(
     result = supabase.table("payments").insert(data).execute()
     return result.data[0] if result.data else None
 
-
 def update_payment_status(
     stripe_payment_intent_id: str,
     status: str,
@@ -53,7 +48,6 @@ def update_payment_status(
         .execute()
     )
     return result.data[0] if result.data else None
-
 
 def save_payment_method(
     user_id: str,
@@ -82,7 +76,6 @@ def save_payment_method(
     result = supabase.table("payment_methods").insert(data).execute()
     return result.data[0] if result.data else None
 
-
 def get_payment_methods(user_id: str):
     supabase = get_supabase()
     result = (
@@ -95,7 +88,6 @@ def get_payment_methods(user_id: str):
     )
     return result.data or []
 
-
 def get_payment_by_intent(stripe_payment_intent_id: str):
     supabase = get_supabase()
     result = (
@@ -106,7 +98,6 @@ def get_payment_by_intent(stripe_payment_intent_id: str):
         .execute()
     )
     return result.data
-
 
 def get_payment_history(user_id: str):
     supabase = get_supabase()

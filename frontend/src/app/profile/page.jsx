@@ -84,7 +84,7 @@ export default function ProfilePage() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--navy)" }}>
 
-      {/* NAV */}
+      {}
       <nav style={{
         borderBottom: "1px solid var(--border)", padding: "0 40px", height: 64,
         display: "flex", alignItems: "center", justifyContent: "space-between",
@@ -106,7 +106,7 @@ export default function ProfilePage() {
           This data personalises every trip the AI plans for you.
         </p>
 
-        {/* Personal Info */}
+        {}
         <div className="glass" style={{ borderRadius: 20, padding: "32px", marginBottom: 24 }}>
           <p style={{ fontSize: 12, color: "var(--gold)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 20 }}>
             Personal Info
@@ -138,7 +138,7 @@ export default function ProfilePage() {
           </button>
         </div>
 
-        {/* Travel Preferences */}
+        {}
         <div className="glass" style={{ borderRadius: 20, padding: "32px" }}>
           <p style={{ fontSize: 12, color: "var(--gold)", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 20 }}>
             Travel Preferences

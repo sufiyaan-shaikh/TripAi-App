@@ -25,14 +25,13 @@ export default function LoginPage() {
   const [slide, setSlide]     = useState(0)
   const [fade, setFade]       = useState(true)
 
-  // Auto-advance slideshow every 4 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setFade(false)
       setTimeout(() => {
         setSlide(prev => (prev + 1) % SLIDES.length)
         setFade(true)
-      }, 700) // fade out, then swap image, then fade in
+      }, 700) 
     }, 4500)
     return () => clearInterval(interval)
   }, [])
@@ -64,13 +63,13 @@ export default function LoginPage() {
       display: "flex", position: "relative", overflow: "hidden",
     }}>
 
-      {/* Background ambient glow */}
+      {}
       <div style={{
         position: "absolute", inset: 0, pointerEvents: "none",
         background: "radial-gradient(ellipse 80% 60% at 20% 50%, rgba(245,158,11,0.06) 0%, transparent 60%)",
       }} />
 
-      {/* ── Left panel: Form ── */}
+      {}
       <div style={{
         width: "100%", maxWidth: 480, display: "flex", flexDirection: "column",
         justifyContent: "center", padding: "60px 48px", zIndex: 10,
@@ -139,10 +138,10 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ── Right panel: Crossfade Slideshow ── */}
+      {}
       <div className="hidden-mobile" style={{ flex: 1, position: "relative", overflow: "hidden" }}>
 
-        {/* All slides stacked, only active one is visible */}
+        {}
         {SLIDES.map((s, i) => (
           <div
             key={s.src}
@@ -156,19 +155,19 @@ export default function LoginPage() {
           />
         ))}
 
-        {/* Left navy fade blending into the form */}
+        {}
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
           background: "linear-gradient(to right, var(--navy) 0%, rgba(10,15,30,0.3) 50%, transparent 100%)",
         }} />
 
-        {/* Bottom overlay for city label */}
+        {}
         <div style={{
           position: "absolute", bottom: 0, left: 0, right: 0,
           background: "linear-gradient(to top, rgba(10,15,30,0.9) 0%, transparent 100%)",
           padding: "48px 40px 36px",
         }}>
-          {/* Dot indicators */}
+          {}
           <div style={{ display: "flex", gap: 8, marginBottom: 20 }}>
             {SLIDES.map((_, i) => (
               <button
@@ -184,7 +183,7 @@ export default function LoginPage() {
             ))}
           </div>
 
-          {/* City badge */}
+          {}
           <div style={{
             opacity: fade ? 1 : 0, transition: "opacity 0.5s ease",
           }}>
@@ -204,4 +203,4 @@ export default function LoginPage() {
     </div>
   )
 }
-
+

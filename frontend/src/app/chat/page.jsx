@@ -13,12 +13,11 @@ import LoadingScreen from "@/components/ui/LoadingScreen"
 import { useVoice } from "@/hooks/useVoice"
 import { useSidebar } from "@/context/SidebarContext"
 
-// ── Day-by-Day Itinerary Parser ───────────────────────────
 function parseItinerary(text) {
-  // Match "Day 1", "Day 2 -", "**Day 3:**" etc.
+
   const dayRegex = /(?:^|\n)\*{0,2}Day\s*(\d+)\*{0,2}[:\s\-–]*/gi
   const parts = text.split(dayRegex)
-  if (parts.length < 3) return null // No day structure found
+  if (parts.length < 3) return null 
   const days = []
   for (let i = 1; i < parts.length; i += 2) {
     days.push({ num: parts[i], content: (parts[i + 1] || "").trim() })
@@ -81,16 +80,15 @@ function ChatPageInner({ roomId = null }) {
   const [paymentDone, setPaymentDone] = useState(false)
   const [lastTripId, setLastTripId]   = useState(null)
   const [copied, setCopied]           = useState(false)
-  const [mapOpen, setMapOpen]         = useState(true) // Map toggle
+  const [mapOpen, setMapOpen]         = useState(true) 
   const { isCollapsed }               = useSidebar()
 
-  // Handle deep-linked destination from dashboard
   useEffect(() => {
     const dest = searchParams.get("destination")
     if (dest && messages.length <= 1 && !loading) {
       const prompt = `Plan a trip to ${dest}`
       setInput(prompt)
-      // Auto-send slightly after mount to feel natural
+
       const timer = setTimeout(() => {
         sendMessage(prompt)
       }, 1000)
@@ -100,7 +98,7 @@ function ChatPageInner({ roomId = null }) {
 
   const { isListening, toggleListening, error: voiceError } = useVoice((transcript) => {
     setInput(transcript)
-    // Auto-submit after voice ends
+
     if (transcript.length > 2) {
       setTimeout(() => {
         handleSend(transcript)
@@ -117,7 +115,7 @@ function ChatPageInner({ roomId = null }) {
   }, [messages, loading])
 
   const lastAIMessage = [...messages].reverse().find(m => m.role === "assistant")
-  
+
   let currentDestination = "Custom Trip"
   if (lastAIMessage) {
     const destMatch = lastAIMessage.content?.match(/Trip Plan:\s*([^(\n]+)/i)
@@ -149,7 +147,7 @@ function ChatPageInner({ roomId = null }) {
 
   const handleMakePayment = async () => {
     try {
-      // Extract total cost if presented
+
       let cost = 100000
       const costMatch = lastAIMessage?.content?.match(/Total Estimated:\s*[^\d]*([\d,]+)/i)
       if (costMatch && costMatch[1]) {
@@ -203,7 +201,7 @@ function ChatPageInner({ roomId = null }) {
 
       <div style={{ marginLeft: isCollapsed ? 80 : 260, transition: "margin-left 0.3s ease", display: "flex", height: "100vh" }}>
 
-        {/* ── CHAT PANEL ── */}
+        {}
         <div style={{
           flex: mapOpen ? "0 0 65%" : "1",
           display: "flex", flexDirection: "column",
@@ -214,7 +212,7 @@ function ChatPageInner({ roomId = null }) {
           maxWidth: "100%",
         }}>
 
-          {/* Header */}
+          {}
           <div style={{
             display: "flex", justifyContent: "space-between", alignItems: "center",
             padding: "14px 24px",
@@ -273,7 +271,7 @@ function ChatPageInner({ roomId = null }) {
             </div>
           </div>
 
-          {/* Messages */}
+          {}
           <div style={{ flex: 1, overflowY: "auto", padding: "28px 32px 130px" }}>
             <div style={{ maxWidth: 680, margin: "0 auto", display: "flex", flexDirection: "column", gap: 20 }}>
 
@@ -368,7 +366,7 @@ function ChatPageInner({ roomId = null }) {
             </div>
           </div>
 
-          {/* Input Bar */}
+          {}
           <div className="floating-input-bar">
             <button onClick={toggleListening} title={isListening ? "Stop" : "Voice Planning"} style={{ width: 44, height: 44, borderRadius: "50%", background: isListening ? "var(--gold)" : "rgba(255,255,255,0.05)", border: isListening ? "none" : "1px solid var(--border)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", transition: "all 0.3s", animation: isListening ? "voice-pulse 1.5s infinite" : "none", fontSize: 18, flexShrink: 0 }}>
               {isListening ? "🛑" : "🎙️"}
@@ -398,7 +396,7 @@ function ChatPageInner({ roomId = null }) {
           )}
         </div>
 
-        {/* ── MAP PANEL ── */}
+        {}
         {mapOpen && (
           <div style={{ flex: 1, padding: "20px 24px", display: "flex", flexDirection: "column", minWidth: 0, animation: "fadeUp 0.3s ease" }}>
             <div style={{ marginBottom: 12 }}>

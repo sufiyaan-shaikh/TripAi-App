@@ -30,7 +30,6 @@ async def get_trip_stats(user=Depends(get_current_user)):
         PAID_STATUSES = {"booked", "paid", "completed", "succeeded", "confirmed"}
         booked = len([t for t in trips if t.get("status", "").lower() in PAID_STATUSES])
 
-        # Pull actual money spent from the payments table (more reliable)
         supabase = get_supabase_admin()
         payments_res = supabase.table("payments") \
             .select("amount") \
@@ -40,7 +39,6 @@ async def get_trip_stats(user=Depends(get_current_user)):
 
         total_spent = int(sum(float(p.get("amount", 0)) for p in (payments_res.data or [])))
 
-        # Fallback: if no payments found, sum from trips table
         if total_spent == 0 and booked > 0:
             total_spent = int(sum(
                 float(t.get("total_cost", 0))
@@ -48,15 +46,12 @@ async def get_trip_stats(user=Depends(get_current_user)):
                 if t.get("status", "").lower() in PAID_STATUSES
             ))
 
-        # Countries Visited (unique destinations from paid trips)
         destinations = {t.get("destination", "").split(",")[-1].strip() for t in trips if t.get("status", "").lower() in PAID_STATUSES}
         countries_count = len([d for d in destinations if d])
 
-        # Places Saved (Wishlist count)
         wishlist_res = supabase.table("wishlist").select("id", count="exact").eq("user_id", user["id"]).execute()
         places_saved = wishlist_res.count or 0
 
-        # Upcoming Trips
         from datetime import date
         today = date.today().isoformat()
         upcoming = len([t for t in trips if t.get("start_date", "") > today])
@@ -71,5 +66,4 @@ async def get_trip_stats(user=Depends(get_current_user)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 

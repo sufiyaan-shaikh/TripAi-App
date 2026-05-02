@@ -2,7 +2,7 @@ import random
 import uuid
 
 async def search_hotels(city_code: str, checkin: str, checkout: str, star_rating: int = 4):
-    # Mock data as requested
+
     base_price = random.randint(2000, 10000)
     return [
         {
@@ -22,5 +22,5 @@ async def search_hotels(city_code: str, checkin: str, checkout: str, star_rating
     ]
 
 async def book_hotel(hotel_id: str, room_id: str, guest_info: dict):
-    # Mock successful booking
+
     return {"status": "success", "booking_id": f"MOCK-HOTEL-{uuid.uuid4().hex[:8].upper()}"}

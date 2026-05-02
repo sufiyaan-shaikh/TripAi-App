@@ -13,7 +13,6 @@ export default function ChatPage() {
   const inputRef            = useRef(null)
   const router              = useRouter()
 
-  // Auto scroll to bottom on new message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages, loading])
@@ -49,7 +48,7 @@ export default function ChatPage() {
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col">
 
-      {/* ── TOP NAV ── */}
+      {}
       <div className="border-b border-gray-800 px-6 py-4 flex items-center justify-between shrink-0">
         <h1 className="text-xl font-bold">
           Trip<span className="text-blue-400">AI</span>
@@ -84,7 +83,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* ── MESSAGES AREA ── */}
+      {}
       <div className="flex-1 overflow-y-auto px-4 py-6 space-y-6">
         <div className="max-w-3xl mx-auto space-y-6">
 
@@ -93,14 +92,14 @@ export default function ChatPage() {
               key={idx}
               className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
             >
-              {/* AI Avatar */}
+              {}
               {msg.role === "assistant" && (
                 <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mr-3 mt-1">
                   AI
                 </div>
               )}
 
-              {/* Message bubble */}
+              {}
               <div
                 className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap
                   ${msg.role === "user"
@@ -111,7 +110,7 @@ export default function ChatPage() {
                 {msg.content}
               </div>
 
-              {/* User Avatar */}
+              {}
               {msg.role === "user" && (
                 <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs font-bold shrink-0 ml-3 mt-1">
                   {user?.full_name?.[0]?.toUpperCase() || "U"}
@@ -120,7 +119,7 @@ export default function ChatPage() {
             </div>
           ))}
 
-          {/* Loading indicator */}
+          {}
           {loading && (
             <div className="flex justify-start">
               <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold shrink-0 mr-3 mt-1">
@@ -136,7 +135,7 @@ export default function ChatPage() {
             </div>
           )}
 
-          {/* Error message */}
+          {}
           {error && (
             <div className="flex justify-center">
               <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 px-4 py-2 rounded-lg">
@@ -149,7 +148,7 @@ export default function ChatPage() {
         </div>
       </div>
 
-      {/* ── INPUT BAR ── */}
+      {}
       <div className="border-t border-gray-800 px-4 py-4 shrink-0">
         <div className="max-w-3xl mx-auto flex gap-3 items-end">
           <textarea

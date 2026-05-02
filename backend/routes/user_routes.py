@@ -6,16 +6,10 @@ from db.user_db import update_user, get_or_create_preferences, update_preference
 
 router = APIRouter()
 
-
-# ============================================
-# REQUEST MODELS
-# ============================================
-
 class UpdateProfileRequest(BaseModel):
     full_name: Optional[str] = None
     nationality: Optional[str] = None
     phone: Optional[str] = None
-
 
 class UpdatePreferencesRequest(BaseModel):
     preferred_flight_class: Optional[str] = None
@@ -26,12 +20,6 @@ class UpdatePreferencesRequest(BaseModel):
     dietary_requirements: Optional[str] = None
     preferred_currency: Optional[str] = None
     budget_range: Optional[str] = None
-
-
-# ============================================
-# GET PROFILE
-# GET /api/user/profile
-# ============================================
 
 @router.get("/profile")
 async def get_profile(user=Depends(get_current_user)):
@@ -48,12 +36,6 @@ async def get_profile(user=Depends(get_current_user)):
         "preferences": prefs
     }
 
-
-# ============================================
-# UPDATE PROFILE
-# PUT /api/user/profile
-# ============================================
-
 @router.put("/profile")
 async def update_profile(
     payload: UpdateProfileRequest,
@@ -68,12 +50,6 @@ async def update_profile(
     updated = update_user(user["id"], updates)
     return {"message": "Profile updated.", "profile": updated}
 
-
-# ============================================
-# UPDATE PREFERENCES
-# PUT /api/user/preferences
-# ============================================
-
 @router.put("/preferences")
 async def update_user_preferences(
     payload: UpdatePreferencesRequest,
@@ -87,12 +63,6 @@ async def update_user_preferences(
 
     updated = update_preferences(user["id"], updates)
     return {"message": "Preferences saved.", "preferences": updated}
-
-
-# ============================================
-# GET PREFERENCES ONLY
-# GET /api/user/preferences
-# ============================================
 
 @router.get("/preferences")
 async def get_preferences(user=Depends(get_current_user)):

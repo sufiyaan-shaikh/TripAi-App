@@ -8,8 +8,8 @@ class UserProfile(BaseModel):
     nationality: Optional[str] = None
 
 class TravelPreferences(BaseModel):
-    preferred_flight_class: str = "Economy"      # Economy / Business / First
-    preferred_hotel_stars: int = 4               # 3 / 4 / 5
-    preferred_transport: str = "Flight"          # Flight / Train / Both
+    preferred_flight_class: str = "Economy"      
+    preferred_hotel_stars: int = 4               
+    preferred_transport: str = "Flight"          
     dietary_requirements: Optional[str] = None
     currency: str = "INR"

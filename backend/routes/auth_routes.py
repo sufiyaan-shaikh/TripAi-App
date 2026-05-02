@@ -18,8 +18,6 @@ class LoginRequest(BaseModel):
 class RefreshRequest(BaseModel):
     refresh_token: str
 
-
-# --- REGISTER ---
 @router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(payload: RegisterRequest):
     supabase = get_supabase()
@@ -61,8 +59,6 @@ async def register(payload: RegisterRequest):
             raise HTTPException(status_code=409, detail="An account with this email already exists.")
         raise HTTPException(status_code=500, detail=str(e))
 
-
-# --- LOGIN ---
 @router.post("/login")
 async def login(payload: LoginRequest):
     supabase = get_supabase()
@@ -75,7 +71,6 @@ async def login(payload: LoginRequest):
         if not auth_response.user or not auth_response.session:
             raise HTTPException(status_code=401, detail="Incorrect email or password.")
 
-        # Try to get user record; create one if it doesn't exist (edge case)
         user = get_user_by_auth_id(auth_response.user.id)
         if not user:
             user = create_user(
@@ -101,16 +96,12 @@ async def login(payload: LoginRequest):
     except Exception:
         raise HTTPException(status_code=401, detail="Incorrect email or password.")
 
-
-# --- LOGOUT ---
 @router.post("/logout")
 async def logout(user=Depends(get_current_user)):
     supabase = get_supabase()
     supabase.auth.sign_out()
     return {"message": "Logged out successfully."}
 
-
-# --- GET CURRENT USER ---
 @router.get("/me")
 async def get_me(user=Depends(get_current_user)):
     return {
@@ -121,8 +112,6 @@ async def get_me(user=Depends(get_current_user)):
         "phone": user.get("phone"),
     }
 
-
-# --- REFRESH TOKEN ---
 @router.post("/refresh")
 async def refresh_token(payload: RefreshRequest):
     supabase = get_supabase()

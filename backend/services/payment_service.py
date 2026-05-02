@@ -1,7 +1,4 @@
-# ============================================
-# TRIPAI — Payment Service
-# backend/services/payment_service.py
-# ============================================
+
 
 from config.stripe import get_stripe, STRIPE_WEBHOOK_SECRET
 from db.payment_db import (
@@ -12,7 +9,6 @@ from db.payment_db import (
 from db.trip_db import update_trip_status
 
 stripe = get_stripe()
-
 
 async def create_payment_intent(
     trip_id: str,
@@ -28,7 +24,6 @@ async def create_payment_intent(
         total_inr        = amount_inr + tax_amount_inr + platform_fee_inr
         total_usd_cents  = int(round(total_inr / 83, 2) * 100)
 
-        # Create PaymentIntent on Stripe
         intent = stripe.PaymentIntent.create(
             amount=total_usd_cents,
             currency=currency,
@@ -45,8 +40,6 @@ async def create_payment_intent(
             automatic_payment_methods={"enabled": True},
         )
 
-        # Save to DB — non-critical, wrapped separately
-        # so a DB failure never blocks the payment modal
         try:
             save_payment(
                 user_id=user_id,
@@ -77,7 +70,6 @@ async def create_payment_intent(
 
     except Exception as e:
         raise Exception(f"Stripe error: {str(e)}")
-
 
 async def confirm_payment(
     payment_intent_id: str,
@@ -117,7 +109,6 @@ async def confirm_payment(
     except Exception as e:
         raise Exception(f"Stripe error: {str(e)}")
 
-
 async def save_card(
     user_id: str,
     payment_method_id: str,
@@ -139,7 +130,6 @@ async def save_card(
 
     except Exception as e:
         raise Exception(f"Failed to save card: {str(e)}")
-
 
 async def handle_webhook(payload: bytes, sig_header: str):
     try:

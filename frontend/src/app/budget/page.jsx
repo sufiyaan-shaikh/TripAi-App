@@ -21,7 +21,7 @@ export default function BudgetPage() {
       try {
         const [h, s] = await Promise.all([getPaymentHistory(), getTripStats()])
         setHistory(h.payments || [])
-        // Calculate total spent from confirmed payments
+
         const spent = h.payments?.reduce((acc, curr) => acc + (curr.status === "succeeded" ? curr.amount_inr : 0), 0) || 0
         setStats({ total_spent: spent, pending: 0 })
       } catch (err) {
@@ -41,7 +41,7 @@ export default function BudgetPage() {
     <div style={{ minHeight: "100vh", background: "var(--navy)", color: "var(--white)" }}>
       <Sidebar />
       <div style={{ marginLeft: isCollapsed ? 80 : 260, transition: "margin-left 0.3s ease", padding: "40px 60px", maxWidth: 1400, margin: "0 auto", paddingLeft: isCollapsed ? 140 : 320 }}>
-        
+
         <header style={{ marginBottom: 40 }}>
           <p className="section-label" style={{ marginBottom: 12 }}>Financial Hub</p>
           <h1 style={{ fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 700, margin: 0 }}>
@@ -50,7 +50,7 @@ export default function BudgetPage() {
           <p style={{ color: "var(--muted)", marginTop: 10, fontSize: 16 }}>Detailed tracking of your travel investments and budget goals.</p>
         </header>
 
-        {/* TOP STATS */}
+        {}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24, marginBottom: 40 }}>
           <div className="glass" style={{ padding: 28, borderRadius: 24 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -90,7 +90,7 @@ export default function BudgetPage() {
           </div>
         </div>
 
-        {/* TRANSACTIONS TABLE */}
+        {}
         <div className="glass" style={{ borderRadius: 24, padding: "32px 0", overflow: "hidden" }}>
           <div style={{ padding: "0 32px 24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <h2 style={{ fontSize: 20, fontWeight: 700, margin: 0 }}>Recent Transactions</h2>

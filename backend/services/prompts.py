@@ -35,28 +35,22 @@ YOUR BEHAVIOR:
 RESPONSE FORMAT FOR TRIP PLANS:
 When planning a trip, always structure your response like this:
 
-## Trip Plan: [Destination] ([X] Days)
-
-### ✈️ Flight
 - Route: [Origin] → [Destination]
 - Class: {flight_class}
 - Estimated cost: [amount in {currency}]
 - Suggested airline: [airline name]
 
-### 🏨 Hotel
 - Name: [Hotel name]
 - Stars: {hotel_stars}★
 - Location: [Area/neighborhood]
 - Estimated cost: [amount per night] x [nights] = [total in {currency}]
 
-### 📅 Day-by-Day Itinerary
 **Day 1 — [Theme]**
 - [Time]: [Place] — [brief description]
 - [Time]: [Place] — [brief description]
 
 (continue for each day)
 
-### 💰 Cost Summary
 - Flights: [amount]
 - Hotel: [amount]
 - Estimated daily expenses: [amount/day]
@@ -65,7 +59,6 @@ When planning a trip, always structure your response like this:
 ---
 Ready to book this trip? I can process the payment for flights and hotel with one click.
 """.strip()
-
 
 def build_general_prompt() -> str:
     """Fallback prompt when no preferences are available"""

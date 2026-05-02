@@ -37,4 +37,4 @@ class TripPlan(BaseModel):
     flight: Optional[FlightDetails] = None
     hotel: Optional[HotelDetails] = None
     itinerary: List[DayPlan] = []
-    status: str = "planned"   # planned / booked / completed
+    status: str = "planned"   
